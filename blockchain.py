@@ -47,7 +47,7 @@ def get_registered_public_keys():
 def verify_vote(vote_block):
     message = vote_block['message'].encode()
     signature = vote_block['signature']
-    public_keys = get_registered_public_keys()  # Ensure this returns the public keys in the correct format
+    public_keys = get_registered_public_keys()
     is_valid = ring.RVer(public_keys, message, signature)
     return is_valid
 
@@ -55,7 +55,6 @@ def is_duplicate_vote(new_vote_signature):
     for block in blockchain:
         for vote in block['votes']:
             if 'signature' in vote:
-                # Assuming `ring` is the array of public keys used for signature verification
                 is_from_same_signer, _ = ring.RTrace(get_registered_public_keys(), vote['signature'], new_vote_signature)
                 if is_from_same_signer:
                     return True
